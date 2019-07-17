@@ -13,9 +13,10 @@ struct Journal {
     string title;
     vector<string> entries;
 
-    Journal(const struct &title) : title(title) {}
+    Journal(const string &title) : title(title) {}
 
     void add_entry(string entry) {
+        static int count = 1;
         entries.push_back(lexical_cast<string>(count++) + ": " + entry);
     }
 
@@ -25,19 +26,20 @@ struct Journal {
         for (auto& e: entries)
             ofs << e << endl;
     }
-}
+};
 
 // Good Implementation for a journal
 struct GoodJournal {
     string title;
     vector<string> entries;
 
-    GoodJournal(const struct &title) : title(title) {}
+    GoodJournal(const string &title) : title(title) {}
 
     void add_entry(string entry) {
+        static int count = 1;
         entries.push_back(lexical_cast<string>(count++) + ": " + entry);
     }
-}
+};
 
 // The Persistance Manager can be easily modified to incorporate new scenarios
 struct PersistenceManager
@@ -59,11 +61,9 @@ struct PersistenceManager
         for(auto& e: j.entries)
             cout << e << endl;
     }
-}
+};
 
 int main() {
-    return 0;
-
     Journal journal("My Journal");
     journal.add_entry("first entry");
     journal.add_entry("second entry");
@@ -75,6 +75,8 @@ int main() {
     newJournal.add_entry("second entry");
 
     PersistenceManager::save_to_file(newJournal, "file2.txt");
-    PersistenceManager::save_to_file(newJournal);
+    PersistenceManager::print_to_screen(newJournal);
+
+    return 0;
 }
 
